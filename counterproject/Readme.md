@@ -1,1 +1,1 @@
-# welcome
+# Counter project basic using javascript
