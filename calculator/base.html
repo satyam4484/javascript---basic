@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <link rel="stylesheet" href="cal.css">
+</head>
+<body>
+
+    <div class="container">
+        <div class="calc">
+           
+            <div class="display">
+                <div class="display-indicate">
+                    max
+                </div>
+                <div class="display-main" id="upperdata">
+                    0
+                </div>
+
+                <div class="display-operations" id="lowerdata">
+                    0
+                </div>
+            </div>
+
+            <div class="row">
+                <button class="button ac" onclick="cleardata()">ac</button>
+                <button class="button ce" onclick="cutdata()">Del</button>
+                <button class="button div"onclick="adddata('/')">%</button>
+                <button class="button mult" onclick="adddata('*')"">x</button>
+            </div>
+
+            <div class="row">
+                <button class="button seven" onclick="adddata('7')">7</button>
+                <button class="button eight" onclick="adddata('8')">8</button>
+                <button class="button nine" onclick="adddata('9')">9</button>
+                <button class="button minus" onclick="adddata('-')">−</button>
+            </div>
+
+            <div class="row">
+                <button class="button four" onclick="adddata('4')">4</button>
+                <button class="button five" onclick="adddata('5')">5</button>
+                <button class="button six" onclick="adddata('6')">6</button>
+                <button class="button plus" onclick="adddata('+')">+</button>
+            </div>
+
+            <div class="bottom-row">
+                <div class="left">
+                    <div class="row">
+                        <button class="button one"onclick="adddata('1')">1</button>
+                        <button class="button two" onclick="adddata('2')">2</button>
+                        <button class="button three" onclick="adddata('3')">3</button>
+                    </div>
+
+                    <div class="row">
+                        <button class="button zero" onclick="adddata('0')">0</button>
+                        <button class="button dot" onclick="adddata('.')">.</button>
+                    </div>
+                </div>
+
+                <div class="right">
+                    <div class="button eq" onclick="Evaluate()">=</div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <script src="cal.js"></script>
+
+    
+</body>
+
+</html>
