@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <title>Weather app </title>
+    <style>
+        body {
+            background-color: rgb(200, 169, 230);
+        }
+
+        .card {
+            background-color: rgb(197, 228, 114);
+        }
+    </style>
+</head>
+
+<body>
+    <h1 class="text-center my-3">Weather application</h1>
+
+    <div class="container ">
+        <div class="row">
+            <div class="col-sm-5">
+                <label class="col-form-label" for="data">Enter the city name </label>
+                <input type="text" class="form-control" name="data" id="location">
+                <button class="btn btn-success my-2" id="submit">Get</button>
+            </div>
+        </div>
+        <hr>
+
+        <div id="data">
+            <div class="card" >
+                <div class="card-body">
+                    <h2 class="card-title">Weather App</h2>
+                    <h3 class="text-center my-1"></h3>
+                    <div class="row text-center my-5">
+                        <div class="col-sm-4">
+                            <h4>Temp min - ...℃</h4>
+                            <h4>Temp max - ...℃</h4>
+                        </div>
+                        <div class="col-sm-4">
+                            <h4>pressure ...</h4>
+                            <h4>humidity ...</h4>
+                        </div>
+                        <div class="col-sm-4">
+                            <h4>sunrise 🌄</h4>
+                            <h4>sunset 🌇 </h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+        integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+        integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+        crossorigin="anonymous"></script>
+
+    <script>
+
+        console.log("hello world ")
+        // let city = "Mumbai";
+        function gettimestamp(number) {
+            let date = new Date(number * 1000);
+            // Hours part from the timestamp
+            let hours = date.getHours();
+            // Minutes part from the timestamp
+            let minutes = "0" + date.getMinutes();
+            // Seconds part from the timestamp
+            let seconds = "0" + date.getSeconds();
+
+            // Will display time in 10:30:23 format
+            return hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+
+
+        }
+
+        // let icon = [{'cloudy':'🌧'},{'rainy':}]
+
+        document.getElementById("submit").addEventListener("click", () => {
+            let city = document.getElementById("location").value;
+            city = city.charAt(0).toUpperCase() + city.slice(1);
+            // console.log(city);
+            let url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=e719b0ef0cefd36f2bc26f242f09fdd9`;
+            let newurl = `api.openweathermap.org/data/2.5/forecast/daily?q=Mumbai&units=metric&cnt=7&appid=e719b0ef0cefd36f2bc26f242f09fdd9`;
+            fetch(url).then(response => response.json()).then(reponse => {
+                let weather = reponse.weather[0];
+                let tmp = reponse.main;
+
+                let sun = reponse.sys;
+                let sunrise = gettimestamp(sun.sunrise);
+                let sunset = gettimestamp(sun.sunset);
+
+                let html = getcard(city, weather.main, tmp.temp_min, tmp.temp_max, tmp.pressure, tmp.humidity, sunrise, sunset);
+                document.getElementById("data").innerHTML = html;
+            }).catch(() => {
+                document.getElementById("data").innerHTML = "<h1>Enter a Valid City name </h1>"
+            })
+        })
+
+        function getcard(city, type, mintmp, maxtmp, pres, humi, sunrise, sunset) {
+            return `<div class="card">
+                        <div class="card-body">
+                            <h2 class="card-title">${city}</h2>
+                            <h3 class="text-center my-1">${type}</h3>
+                            <div class="row text-center my-5">
+                                <div class="col-sm-4">
+                                    <h4>Temp min - ${mintmp}℃</h4>
+                                    <h4>Temp max - ${maxtmp}℃</h4>
+                                </div>
+                                <div class="col-sm-4">
+                                    <h4>Pressure - ${pres} </h4>
+                                    <h4>Humidity - ${humi}</h4>
+                                </div>
+                                <div class="col-sm-4">
+                                    <h4>Sunrise - ${sunrise} 🌄 </h4>
+                                    <h4 class="my-2">Sunset - ${sunset} 🌇 </h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+        }
+
+
+        // let vad = { "coord": { "lon": 55.3047, "lat": 25.2582 }, "weather": [{ "id": 800, "main": "Clear", "description": "clear sky", "icon": "01d" }], "base": "stations", "main": { "temp": 313.21, "feels_like": 318.81, "temp_min": 313.11, "temp_max": 314.94, "pressure": 999, "humidity": 35 }, "visibility": 10000, "wind": { "speed": 7.2, "deg": 310 }, "clouds": { "all": 0 }, "dt": 1628077684, "sys": { "type": 1, "id": 7537, "country": "AE", "sunrise": 1628041639, "sunset": 1628089344 }, "timezone": 14400, "id": 292223, "name": "Dubai", "cod": 200 }
+
+
+    </script>
+</body>
+
+</html>
